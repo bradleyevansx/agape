@@ -42,7 +42,7 @@ const LoginInputs = () => {
       password: login.password,
     });
     if (!error) {
-      router.push("/b/home");
+      router.push("/b/");
     } else {
       setErrorMessage(error);
     }

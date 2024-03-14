@@ -6,6 +6,7 @@ import NavBar from "@/components/navBar/NavBar";
 import { useState } from "react";
 import Footer from "@/components/footer/Footer";
 import { ThemeProvider } from "@/components/colorModeSwitch/ThemeProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -37,6 +38,7 @@ export default function RootLayout({
         >
           {children}
           <Footer></Footer>
+          <Toaster></Toaster>
         </ThemeProvider>
       </body>
     </html>

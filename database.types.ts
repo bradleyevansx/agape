@@ -9,6 +9,82 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      budgetEntry: {
+        Row: {
+          actual: number
+          budgetEntryGroupId: string
+          created_at: string
+          emoji: string | null
+          id: string
+          planned: number
+          title: string | null
+          userIds: string[]
+        }
+        Insert: {
+          actual?: number
+          budgetEntryGroupId: string
+          created_at?: string
+          emoji?: string | null
+          id?: string
+          planned?: number
+          title?: string | null
+          userIds: string[]
+        }
+        Update: {
+          actual?: number
+          budgetEntryGroupId?: string
+          created_at?: string
+          emoji?: string | null
+          id?: string
+          planned?: number
+          title?: string | null
+          userIds?: string[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_budgetEntry_budgetEntryGroupId_fkey"
+            columns: ["budgetEntryGroupId"]
+            isOneToOne: false
+            referencedRelation: "budgetEntryGroup"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      budgetEntryGroup: {
+        Row: {
+          budgetGroupId: string
+          createdAt: string
+          id: string
+          title: string
+          type: Database["public"]["Enums"]["entryType"]
+          userIds: string[]
+        }
+        Insert: {
+          budgetGroupId: string
+          createdAt?: string
+          id?: string
+          title?: string
+          type?: Database["public"]["Enums"]["entryType"]
+          userIds: string[]
+        }
+        Update: {
+          budgetGroupId?: string
+          createdAt?: string
+          id?: string
+          title?: string
+          type?: Database["public"]["Enums"]["entryType"]
+          userIds?: string[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_budgetEntryGroup_budgetGroupId_fkey"
+            columns: ["budgetGroupId"]
+            isOneToOne: false
+            referencedRelation: "budgetGroup"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       budgetGroup: {
         Row: {
           createdAt: string
@@ -38,7 +114,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      entryType: "debit" | "credit"
     }
     CompositeTypes: {
       [_ in never]: never

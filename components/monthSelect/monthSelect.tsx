@@ -30,7 +30,6 @@ const MonthSelect = ({ baseRoute }: Props) => {
   } | null>(null);
 
   useEffect(() => {
-    console.log("TOP");
     const fetchGroup = async () => {
       const { data, error } = await supabase
         .from("budgetGroup")
@@ -54,7 +53,6 @@ const MonthSelect = ({ baseRoute }: Props) => {
           .single<Tables<"budgetGroup">>();
 
         if (!data) return;
-        console.log(data);
         setMonthYear({
           month: data.month,
           year: data.year,
