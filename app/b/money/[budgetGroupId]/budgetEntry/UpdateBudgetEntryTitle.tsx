@@ -35,7 +35,7 @@ const UpdateBudgetEntryTitle = ({ budgetEntry }: Props) => {
         toast.warning("Title cannot be empty");
         return;
       }
-      saveData;
+      saveData();
       e.preventDefault();
     } else if (e.key === "Escape") {
       setValue(budgetEntry.title!);
@@ -76,14 +76,14 @@ const UpdateBudgetEntryTitle = ({ budgetEntry }: Props) => {
   return (
     <>
       {isEditing ? (
-        <span className="relative">
+        <span className="relative mr-auto">
           <Input
             id="title"
             onChange={handleOnChange}
             value={value}
             onKeyDown={handleKeyDown}
             className={className}
-          ></Input>{" "}
+          ></Input>
           <span
             onClick={saveData}
             className="bg-green-100 hover:cursor-pointer text-green absolute top-0.5 p-0.5 rounded-xl right-0"
