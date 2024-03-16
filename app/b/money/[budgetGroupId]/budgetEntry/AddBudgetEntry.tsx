@@ -1,5 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { useBudgetAutoSave } from "@/customHooks/useBudget";
 import {
   createClientComponentClient,
   createServerComponentClient,
@@ -8,21 +9,21 @@ import { Loader, Loader2Icon } from "lucide-react";
 import React, { useState } from "react";
 
 interface Props {
-  budgetGroupId: string;
+  budgetEntryGroupId: string;
 }
 
-const AddBudgetEntry = ({ budgetGroupId }: Props) => {
+const AddBudgetEntry = ({ budgetEntryGroupId: budgetGroupId }: Props) => {
   const supabase = createClientComponentClient();
   const [isLoading, setIsLoading] = useState(false);
+  const { userIds } = useBudgetAutoSave();
 
   const handleAddBudgetEntry = async () => {
     setIsLoading(true);
-    const user = await supabase.auth.getUser();
     const { data, error } = await supabase.from("budgetEntry").insert({
       emoji: "😁",
       title: "New Entry",
       budgetEntryGroupId: budgetGroupId,
-      userIds: [user.data.user?.id],
+      userIds: [userIds],
     });
     setIsLoading(false);
   };

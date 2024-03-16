@@ -106,6 +106,56 @@ export type Database = {
         }
         Relationships: []
       }
+      profile: {
+        Row: {
+          avatarPath: string | null
+          created_at: string
+          firstName: string | null
+          id: string
+          lastName: string | null
+        }
+        Insert: {
+          avatarPath?: string | null
+          created_at?: string
+          firstName?: string | null
+          id?: string
+          lastName?: string | null
+        }
+        Update: {
+          avatarPath?: string | null
+          created_at?: string
+          firstName?: string | null
+          id?: string
+          lastName?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_profiles_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      relationship: {
+        Row: {
+          created_at: string
+          id: string
+          userIds: string[]
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          userIds: string[]
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          userIds?: string[]
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

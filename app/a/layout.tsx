@@ -9,7 +9,7 @@ const layout = async ({ children }: { children: ReactNode }) => {
     data: { session },
   } = await supabase.auth.getSession();
   if (session) {
-    redirect("/b/home");
+    redirect("/b/");
   }
 
   return <>{children}</>;

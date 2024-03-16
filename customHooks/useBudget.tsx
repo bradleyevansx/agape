@@ -6,12 +6,16 @@ interface BudgetAutoSaveProps {
   budgetEntryGroups: Tables<"budgetEntryGroup">[];
   budgetEntries: Tables<"budgetEntry">[];
   budgetGroupId: string;
+  isLoading: boolean;
+  userIds: string[];
 }
 
 const BudgetAutoSaveContext = createContext<BudgetAutoSaveProps>({
   budgetEntryGroups: [],
   budgetEntries: [],
   budgetGroupId: "",
+  isLoading: false,
+  userIds: [],
 });
 
 export const useBudgetAutoSave = () => useContext(BudgetAutoSaveContext);
@@ -25,6 +29,7 @@ export const BudgetAutoSaveProvider: React.FC<BudgetAutoSaveProviderProps> = ({
   children,
   budgetGroupId,
 }) => {
+  const [partnerId, setPartnerId] = useState<string[]>([]);
   const supabase = createClientComponentClient();
   const [budgetEntryGroups, setBudgetEntryGroups] = useState<
     Tables<"budgetEntryGroup">[]
@@ -33,8 +38,11 @@ export const BudgetAutoSaveProvider: React.FC<BudgetAutoSaveProviderProps> = ({
     []
   );
 
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       const { data: entryGroupsData, error: entryGroupsError } = await supabase
         .from("budgetEntryGroup")
         .select("*")
@@ -43,16 +51,26 @@ export const BudgetAutoSaveProvider: React.FC<BudgetAutoSaveProviderProps> = ({
         setBudgetEntryGroups(entryGroupsData ?? []);
       }
 
+      const { data: relationship, error: relationshipErorr } = await supabase
+        .from("relationship")
+        .select("*")
+        .single<Tables<"relationship">>();
+
+      if (!relationshipErorr) {
+        setPartnerId(relationship.userIds);
+      }
+
       const { data: entriesData, error: entriesError } = await supabase
         .from("budgetEntry")
         .select("*")
-        .eq(
+        .in(
           "budgetEntryGroupId",
           entryGroupsData?.map((group) => group.id) ?? []
         );
       if (!entriesError) {
         setBudgetEntries(entriesData ?? []);
       }
+      setIsLoading(false);
     };
 
     fetchData();
@@ -60,7 +78,6 @@ export const BudgetAutoSaveProvider: React.FC<BudgetAutoSaveProviderProps> = ({
     const changes = supabase
       .channel("supabase_realtime")
       .on("postgres_changes", { event: "*", schema: "public" }, (payload) => {
-        console.log(payload);
         const { table } = payload;
         if (table === "budgetEntryGroup") {
           handleBudgetEntryGroupChange(payload);
@@ -117,7 +134,13 @@ export const BudgetAutoSaveProvider: React.FC<BudgetAutoSaveProviderProps> = ({
 
   return (
     <BudgetAutoSaveContext.Provider
-      value={{ budgetEntryGroups, budgetEntries, budgetGroupId }}
+      value={{
+        budgetEntryGroups,
+        budgetEntries,
+        budgetGroupId,
+        isLoading,
+        userIds: partnerId,
+      }}
     >
       {children}
     </BudgetAutoSaveContext.Provider>

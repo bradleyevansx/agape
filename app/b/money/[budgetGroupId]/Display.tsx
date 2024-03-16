@@ -19,14 +19,16 @@ const BudgetEntryGroupsDisplay = ({ budgetGroupId }: Props) => {
     "Planned"
   );
 
+  const [id, setId] = useState(budgetGroupId);
+
   return (
     <>
       <section className="h-fit flex gap-2">
-        <MonthSelect baseRoute="/b/money"></MonthSelect>
+        <MonthSelect onIdChange={setId} baseRoute="/b/money"></MonthSelect>
         <div className="border-l"></div>
         <TypeSelect type={type} onTypeChange={setType}></TypeSelect>
       </section>
-      <BudgetAutoSaveProvider budgetGroupId={budgetGroupId}>
+      <BudgetAutoSaveProvider budgetGroupId={id}>
         <BudgetEntryGroups type={type}></BudgetEntryGroups>
       </BudgetAutoSaveProvider>
     </>

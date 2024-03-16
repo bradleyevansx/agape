@@ -27,7 +27,7 @@ import { useBudgetAutoSave } from "@/customHooks/useBudget";
 const AddBudgetEntryGroup = () => {
   const [open, setOpen] = useState(false);
   const supabase = createClientComponentClient();
-  const { budgetGroupId } = useBudgetAutoSave();
+  const { budgetGroupId, userIds } = useBudgetAutoSave();
   const [type, setType] = useState<"debit" | "credit" | undefined>();
   const [title, setTitle] = useState("");
 
@@ -42,13 +42,12 @@ const AddBudgetEntryGroup = () => {
       return;
     }
     setIsLoading(true);
-    const user = await supabase.auth.getUser();
 
     const { data, error } = await supabase.from("budgetEntryGroup").insert({
       title: title,
       type: type,
       budgetGroupId: budgetGroupId,
-      userIds: [user.data.user?.id],
+      userIds: [userIds],
     });
     setOpen(false);
     setIsLoading(false);
@@ -127,7 +126,11 @@ const AddBudgetEntryGroup = () => {
             </SelectContent>
           </Select>
         </span>
-        <Button variant={"secondary"} onClick={handleAddBudgetEntryGroup}>
+        <Button
+          variant={"secondary"}
+          disabled={isLoading}
+          onClick={handleAddBudgetEntryGroup}
+        >
           Done
         </Button>
       </DialogContent>

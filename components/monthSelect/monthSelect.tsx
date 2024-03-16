@@ -11,17 +11,17 @@ import {
   SelectValue,
 } from "../ui/select";
 import { months } from "@/types/months";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Tables } from "@/database.types";
 import { ArrowLeft, ArrowRight, Loader2Icon } from "lucide-react";
 
 interface Props {
   baseRoute: string;
+  onIdChange: (val: string) => void;
 }
 
-const MonthSelect = ({ baseRoute }: Props) => {
-  const router = useRouter();
+const MonthSelect = ({ baseRoute, onIdChange }: Props) => {
   const { budgetGroupId } = useParams();
   const supabase = createClientComponentClient();
   const [monthYear, setMonthYear] = useState<{
@@ -57,6 +57,7 @@ const MonthSelect = ({ baseRoute }: Props) => {
           month: data.month,
           year: data.year,
         });
+        onIdChange(data.id);
         window.history.pushState(null, "", `${baseRoute}/${data.id}`);
       }
     };

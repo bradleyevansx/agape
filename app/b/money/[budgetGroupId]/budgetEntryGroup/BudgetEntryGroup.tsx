@@ -13,42 +13,46 @@ import {
 } from "@/components/ui/card";
 import Text from "@/components/typography/Text";
 import BudgetEntry from "../budgetEntry/BudgetEntry";
-import AddBudgetEntry from "../AddBudgetEntry";
+import AddBudgetEntry from "../budgetEntry/AddBudgetEntry";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { ArrowDownNarrowWide, ChevronDown, ChevronUp } from "lucide-react";
 import UpdateBudgetEntryGroupTitle from "./UpdateBudgetEntryGroupTitle";
 import { useBudgetAutoSave } from "@/customHooks/useBudget";
+import DeleteBudgetEntryGroup from "./DeleteBudgetEntryGroup";
+import { Badge } from "@/components/ui/badge";
+import UpdateBudgetEntryGroupType from "./UpdateBudgetEntryGroupType";
 interface Props {
-  budgetGroup: Tables<"budgetEntryGroup">;
+  budgetEntryGroup: Tables<"budgetEntryGroup">;
   type: "Planned" | "Actual" | "Remaining";
 }
 
-const BudgetEntryGroup = ({ type, budgetGroup }: Props) => {
+const BudgetEntryGroup = ({ type, budgetEntryGroup }: Props) => {
   const { budgetEntries } = useBudgetAutoSave();
   const [open, setOpen] = useState(false);
   const availableEntries = useMemo(() => {
     return budgetEntries.filter(
-      (entry) => entry.budgetEntryGroupId === budgetGroup.id
+      (entry) => entry.budgetEntryGroupId === budgetEntryGroup.id
     );
-  }, [budgetEntries, budgetGroup.id]);
+  }, [budgetEntries, budgetEntryGroup.id]);
   const styles =
-    budgetGroup.type === "debit"
+    budgetEntryGroup.type === "debit"
       ? "bg-green-200 text-green-400 h-5 rounded w-5 flex items-center justify-center"
       : "text-red-400 bg-red-100 ";
 
-  const isDebit = budgetGroup.type === "debit" ? "+" : "-";
+  const isDebit = budgetEntryGroup.type === "debit" ? "+" : "-";
 
   return (
     <Card className="w-5/6 max-w-[415px]">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <UpdateBudgetEntryGroupTitle
-            budgetEntryGroup={budgetGroup}
+            budgetEntryGroup={budgetEntryGroup}
           ></UpdateBudgetEntryGroupTitle>
-          <p className=" text-lg text-neutral-400 bg-neutral-100 px-2 rounded-md">
-            {type}
-          </p>
+          <UpdateBudgetEntryGroupType
+            budgetEntryGroup={budgetEntryGroup}
+            type={type}
+          ></UpdateBudgetEntryGroupType>
         </CardTitle>
       </CardHeader>
       {open ? (
@@ -66,7 +70,12 @@ const BudgetEntryGroup = ({ type, budgetGroup }: Props) => {
             </ul>
           </CardContent>
           <CardFooter className="gap-2">
-            <AddBudgetEntry budgetGroupId={budgetGroup.id}></AddBudgetEntry>
+            <DeleteBudgetEntryGroup
+              budgetGroupId={budgetEntryGroup.id}
+            ></DeleteBudgetEntryGroup>
+            <AddBudgetEntry
+              budgetEntryGroupId={budgetEntryGroup.id}
+            ></AddBudgetEntry>
             <Button onClick={() => setOpen(false)} variant={"secondary"}>
               <ChevronUp></ChevronUp>
             </Button>
@@ -80,7 +89,7 @@ const BudgetEntryGroup = ({ type, budgetGroup }: Props) => {
             className="w-full"
           >
             <ChevronDown></ChevronDown>
-            {budgetGroup.type === "debit" ? "Debits" : "Credits"}
+            {budgetEntryGroup.type === "debit" ? "Debits" : "Credits"}
           </Button>
         </CardFooter>
       )}

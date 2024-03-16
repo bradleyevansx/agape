@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Tables } from "@/database.types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { toast } from "sonner";
+import { Check, Loader2Icon } from "lucide-react";
 
 interface Props {
   budgetEntry: Tables<"budgetEntry">;
@@ -12,7 +13,7 @@ interface Props {
 const UpdateBudgetEntryAmount = ({ budgetEntry, type }: Props) => {
   const [isEditing, setIsEditing] = useState(false);
   const [value, setValue] = useState<number | undefined>(undefined);
-  const supabase = createClientComponentClient();
+  const [isLoading, setIsLoading] = useState(false);
 
   const remaining = useMemo(() => {
     return budgetEntry.planned - budgetEntry.actual;
@@ -22,29 +23,49 @@ const UpdateBudgetEntryAmount = ({ budgetEntry, type }: Props) => {
     setValue(parseFloat(e.target.value));
   };
 
+  const saveData = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+    const supabase = createClientComponentClient();
+    let updateData: { [key: string]: any } = {};
+    if (type === "Planned") {
+      updateData.planned = value;
+    } else if (type === "Actual") {
+      updateData.actual = value;
+    }
+
+    const { data, error } = await supabase
+      .from("budgetEntry")
+      .update(updateData)
+      .eq("id", budgetEntry.id);
+    setIsEditing(false);
+    setIsLoading(false);
+  };
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      let updateData: { [key: string]: any } = {};
-      if (type === "Planned") {
-        updateData.planned = value;
-      } else if (type === "Actual") {
-        updateData.actual = value;
-      }
+      await saveData();
 
-      const { data, error } = await supabase
-        .from("budgetEntry")
-        .update(updateData)
-        .eq("id", budgetEntry.id)
-        .select()
-        .single();
-
-      setIsEditing(false);
       e.preventDefault();
     } else if (e.key === "Escape") {
       e.preventDefault();
       setIsEditing(false);
     }
   };
+
+  const saveButton = useMemo(() => {
+    return (
+      <>
+        {isLoading ? (
+          <Loader2Icon
+            className="animate-spin text-green-400"
+            size={15}
+          ></Loader2Icon>
+        ) : (
+          <Check size={15} className="text-green-400"></Check>
+        )}
+      </>
+    );
+  }, [isLoading]);
 
   useEffect(() => {
     if (isEditing) {
@@ -61,14 +82,22 @@ const UpdateBudgetEntryAmount = ({ budgetEntry, type }: Props) => {
   switch (type) {
     case "Planned":
       return isEditing ? (
-        <Input
-          id="inputField"
-          className={inputClassName}
-          type="number"
-          value={value !== undefined ? value.toString() : ""}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
-        />
+        <span className="relative">
+          <Input
+            id="inputField"
+            className={inputClassName}
+            type="number"
+            value={value !== undefined ? value.toString() : ""}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+          />
+          <span
+            onClick={saveData}
+            className="bg-green-100 hover:cursor-pointer text-green absolute top-0.5 p-0.5 rounded-xl right-0"
+          >
+            {saveButton}
+          </span>
+        </span>
       ) : (
         <p
           onClick={() => {
@@ -77,19 +106,27 @@ const UpdateBudgetEntryAmount = ({ budgetEntry, type }: Props) => {
           }}
           className={pClassName}
         >
-          {budgetEntry.planned}
+          {"$" + budgetEntry.planned.toFixed(2)}
         </p>
       );
     case "Actual":
       return isEditing ? (
-        <Input
-          id="inputField"
-          className={inputClassName}
-          type="number"
-          value={value !== undefined ? value.toString() : ""}
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown}
-        />
+        <span className="relative">
+          <Input
+            id="inputField"
+            className={inputClassName}
+            type="number"
+            value={value !== undefined ? value.toString() : ""}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+          />
+          <span
+            onClick={saveData}
+            className="bg-green-100 hover:cursor-pointer text-green absolute top-0.5 p-0.5 rounded-xl right-0"
+          >
+            {saveButton}
+          </span>
+        </span>
       ) : (
         <p
           onClick={() => {
@@ -98,7 +135,7 @@ const UpdateBudgetEntryAmount = ({ budgetEntry, type }: Props) => {
           }}
           className={pClassName}
         >
-          {budgetEntry.actual}
+          {"$" + budgetEntry.actual.toFixed(2)}
         </p>
       );
     case "Remaining":

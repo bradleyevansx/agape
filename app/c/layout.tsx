@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import NavBar from "@/components/navBar/NavBar";
 import { Tables } from "@/database.types";
 
-export default async function AuthenticatedLayout({
+export default async function layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -17,15 +17,6 @@ export default async function AuthenticatedLayout({
 
   if (!session) {
     redirect("/a/no-access");
-  }
-
-  const { data } = await supabase
-    .from("relationship")
-    .select("*")
-    .single<Tables<"relationship">>();
-
-  if (!data) {
-    redirect("/c/user");
   }
 
   return (

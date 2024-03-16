@@ -4,6 +4,7 @@ import { Tables } from "@/database.types";
 import React from "react";
 import UpdateBudgetEntryTitle from "./UpdateBudgetEntryTitle";
 import UpdateBudgetEntryAmount from "./UpdateBudgetEntryAmount";
+import DeleteBudgetEntry from "./DeleteBudgetEntry";
 
 interface Props {
   budgetEntry: Tables<"budgetEntry">;
@@ -13,6 +14,7 @@ interface Props {
 const BudgetEntry = ({ budgetEntry, type }: Props) => {
   return (
     <li className="flex items-center">
+      <DeleteBudgetEntry budgetEntryId={budgetEntry.id}></DeleteBudgetEntry>
       <p className="mr-1">{budgetEntry.emoji}</p>
       <UpdateBudgetEntryTitle
         budgetEntry={budgetEntry}
