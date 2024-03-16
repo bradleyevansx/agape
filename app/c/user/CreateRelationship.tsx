@@ -88,7 +88,7 @@ const CreateRelationship = ({ usersId, onRelationshipCreated }: Props) => {
             </span>
           </div>
           <div className="mt-2">
-            <Label>Partner's Code</Label>
+            <Label>Partner&apos;s Code</Label>
             <div className="flex gap-2">
               <Input
                 disabled={isLoading}

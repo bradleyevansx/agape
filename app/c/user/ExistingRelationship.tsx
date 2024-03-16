@@ -22,7 +22,7 @@ const ExistingRelationship = ({ usersId, relationship }: Props) => {
       setPartner(data);
     };
     fetchAsync();
-  }, [relationship]);
+  }, [relationship, usersId]);
 
   return (
     <Card>

@@ -46,7 +46,7 @@ const ValueSetter = ({ onChange }: Props) => {
       }
     };
     fetchNewData();
-  }, [monthYear?.month, monthYear?.year]);
+  }, [monthYear, monthYear?.month, monthYear?.year, onChange, supabase]);
 
   const handleMonthChange = (newMonthYear: string) => {
     const [newMonth, newYear] = newMonthYear.split(" ");

@@ -29,8 +29,8 @@ export default function LandingPage() {
           handling <b className="text-green-500">finances</b>, pursuing{" "}
           <b className="text-teal-500">goals</b>, and enjoying{" "}
           <b className="text-blue-500">meals</b>, and managing{" "}
-          <b className="text-purple-500">time</b> as a couple. Let's make every
-          moment count.
+          <b className="text-purple-500">time</b> as a couple. Let&apos;s make
+          every moment count.
         </p>
       </section>
 

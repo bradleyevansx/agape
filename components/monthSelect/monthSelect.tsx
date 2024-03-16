@@ -40,7 +40,7 @@ const MonthSelect = ({ baseRoute, onIdChange }: Props) => {
       setMonthYear({ month: data.month, year: data.year });
     };
     fetchGroup();
-  }, []);
+  }, [budgetGroupId, supabase]);
 
   useEffect(() => {
     const fetchNewData = async () => {
@@ -62,7 +62,14 @@ const MonthSelect = ({ baseRoute, onIdChange }: Props) => {
       }
     };
     fetchNewData();
-  }, [monthYear?.month, monthYear?.year]);
+  }, [
+    monthYear?.month,
+    monthYear?.year,
+    baseRoute,
+    monthYear,
+    onIdChange,
+    supabase,
+  ]);
 
   const handleMonthChange = (newMonthYear: string) => {
     const [newMonth, newYear] = newMonthYear.split(" ");

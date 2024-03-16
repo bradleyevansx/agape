@@ -1,5 +1,5 @@
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import CreateRelationship from "./CreateRelationship";
 import ExistingRelationship from "./ExistingRelationship";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -12,7 +12,7 @@ interface Props {
 const Relationship = ({ usersId }: Props) => {
   const [component, setComponent] = useState<ReactNode>(null);
 
-  const fetchAsync = async () => {
+  const fetchAsync = useCallback(async () => {
     const supabase = createClientComponentClient();
 
     const { data, error } = await supabase
@@ -32,13 +32,13 @@ const Relationship = ({ usersId }: Props) => {
         <ExistingRelationship usersId={usersId!} relationship={data} />
       );
     }
-  };
+  }, [usersId]);
 
   useEffect(() => {
     if (usersId) {
       fetchAsync();
     }
-  }, [usersId]);
+  }, [usersId, fetchAsync]);
 
   if (!usersId) {
     return <Skeleton />;

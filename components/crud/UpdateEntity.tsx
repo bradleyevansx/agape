@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -28,7 +28,7 @@ const UpdateEntity = ({
     setInputValue(event.target.value);
   };
 
-  const updateDb = async () => {
+  const updateDb = useCallback(async () => {
     if (initialValue === undefined || initialValue === inputValue) return;
     setIsLoading(true);
     const supabase = createClientComponentClient();
@@ -37,7 +37,14 @@ const UpdateEntity = ({
       .update({ [modifyingProperty]: inputValue })
       .eq("id", entityId);
     toast.info(`${placeHolder} is now updated.`);
-  };
+  }, [
+    entityId,
+    initialValue,
+    inputValue,
+    modifyingProperty,
+    placeHolder,
+    table,
+  ]);
 
   useEffect(() => {
     if (initialValue) {
@@ -51,7 +58,7 @@ const UpdateEntity = ({
       updateDb();
     }, 750);
     return () => clearTimeout(timeoutId);
-  }, [inputValue, 750]);
+  }, [inputValue, updateDb]);
 
   return (
     <div className="relative">

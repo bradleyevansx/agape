@@ -46,7 +46,7 @@ const UploadFile = ({ fileType, label, initialValue }: Props) => {
       }
     };
     fetchAsync();
-  }, []);
+  }, [supabase]);
 
   const handleUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;

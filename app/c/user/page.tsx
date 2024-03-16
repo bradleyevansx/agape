@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Tables } from "@/database.types";
 import Relationship from "./Relationship";
 
-const page = () => {
+const UserPage = () => {
   const supabase = createClientComponentClient();
 
   const [profile, setProfile] = useState<Tables<"profile"> | null>(null);
@@ -40,7 +40,7 @@ const page = () => {
     return () => {
       changes.unsubscribe();
     };
-  }, []);
+  }, [supabase]);
 
   return (
     <main className="flex p-4 min-h-app">
@@ -67,4 +67,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default UserPage;
