@@ -12,22 +12,19 @@ interface Props {
 const Totals = ({ type }: Props) => {
   const { budgetEntries, budgetEntryGroups } = useBudgetAutoSave();
 
-  const getEntryValue = useCallback(
-    (
-      budgetEntry: Tables<"budgetEntry">,
-      desiredBudgetEntryType: "debit" | "credit"
-    ) => {
-      const budgetEntryType = budgetEntryGroups.find(
-        (x) => x.id === budgetEntry.budgetEntryGroupId
-      )?.type;
+  const getEntryValue = (
+    budgetEntry: Tables<"budgetEntry">,
+    desiredBudgetEntryType: "debit" | "credit"
+  ) => {
+    const budgetEntryType = budgetEntryGroups.find(
+      (x) => x.id === budgetEntry.budgetEntryGroupId
+    )?.type;
 
-      if (budgetEntryType === desiredBudgetEntryType) {
-        return getValue(budgetEntry);
-      }
-      return 0;
-    },
-    []
-  );
+    if (budgetEntryType === desiredBudgetEntryType) {
+      return getValue(budgetEntry);
+    }
+    return 0;
+  };
 
   const getValue = (budgetEntry: Tables<"budgetEntry">) => {
     switch (type) {
