@@ -41,7 +41,7 @@ export const BudgetAutoSaveProvider: React.FC<BudgetAutoSaveProviderProps> = ({
     []
   );
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {

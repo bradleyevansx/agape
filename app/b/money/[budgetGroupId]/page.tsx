@@ -6,11 +6,11 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Database, Tables } from "@/database.types";
 import BudgetEntryGroup from "./budgetEntryGroup/BudgetEntryGroup";
 import TypeSelect from "./TypeSelect";
-import BudgetEntryGroupsDisplay from "./Display";
+import BudgetEntryGroupsDisplay from "./BudgetEntryGroupsDisplay";
 const BudgetGroupEditor = async ({ params }: { params: Params }) => {
   const { budgetGroupId } = params;
   return (
-    <main className="flex flex-col space-y-4 p-4 justify-start items-center min-h-app">
+    <main className="flex flex-col gap-4 p-4 justify-start items-center min-h-app">
       <BudgetEntryGroupsDisplay
         budgetGroupId={budgetGroupId}
       ></BudgetEntryGroupsDisplay>

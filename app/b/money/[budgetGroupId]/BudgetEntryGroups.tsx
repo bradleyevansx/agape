@@ -14,9 +14,7 @@ const BudgetEntryGroups = ({ type }: Props) => {
   const { budgetEntryGroups, isLoading } = useBudgetAutoSave();
   return (
     <>
-      {isLoading ? (
-        <Loader2Icon className="animate-spin"></Loader2Icon>
-      ) : (
+      {!isLoading && (
         <>
           {budgetEntryGroups?.map((entryGroup) => (
             <BudgetEntryGroup

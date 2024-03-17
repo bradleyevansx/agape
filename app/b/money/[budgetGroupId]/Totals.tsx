@@ -10,7 +10,7 @@ interface Props {
 }
 
 const Totals = ({ type }: Props) => {
-  const { budgetEntries, budgetEntryGroups } = useBudgetAutoSave();
+  const { budgetEntries, budgetEntryGroups, isLoading } = useBudgetAutoSave();
 
   const getEntryValue = (
     budgetEntry: Tables<"budgetEntry">,
@@ -60,22 +60,28 @@ const Totals = ({ type }: Props) => {
   }, [budgetEntries, budgetEntryGroups, type, getEntryValue]);
 
   return (
-    <Card className="w-full">
-      <CardContent className="pt-6 flex-row flex justify-between">
-        <span className="flex flex-col gap-2 items-center">
-          <p className="font-bold text-2xl ">{formatMoney(totalIncome)}</p>
-          <p className=" font-light text-sm bg-green-200 text-green-500 p-1 rounded">
-            Monthly Income
-          </p>
-        </span>
-        <span className="flex flex-col gap-2 items-center">
-          <p className="font-bold text-2xl ">{formatMoney(totalExpenses)}</p>
-          <p className="bg-red-200 text-red-500 p-1 rounded font-light text-sm">
-            Monthly Expenses
-          </p>
-        </span>
-      </CardContent>
-    </Card>
+    <>
+      {!isLoading && (
+        <Card className="w-full">
+          <CardContent className="pt-6 flex-row flex justify-between">
+            <span className="flex flex-col gap-2 items-center">
+              <p className="font-bold text-2xl ">{formatMoney(totalIncome)}</p>
+              <p className=" font-light text-sm bg-green-200 text-green-500 p-1 rounded">
+                Monthly Income
+              </p>
+            </span>
+            <span className="flex flex-col gap-2 items-center">
+              <p className="font-bold text-2xl ">
+                {formatMoney(totalExpenses)}
+              </p>
+              <p className="bg-red-200 text-red-500 p-1 rounded font-light text-sm">
+                Monthly Expenses
+              </p>
+            </span>
+          </CardContent>
+        </Card>
+      )}
+    </>
   );
 };
 
