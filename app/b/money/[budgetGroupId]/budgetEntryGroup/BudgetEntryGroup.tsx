@@ -43,7 +43,7 @@ const BudgetEntryGroup = ({ type, budgetEntryGroup }: Props) => {
   const isDebit = budgetEntryGroup.type === "debit" ? "+" : "-";
 
   return (
-    <Card className="w-5/6 max-w-[415px]">
+    <Card className="w-full max-w-[415px]">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <UpdateBudgetEntryGroupTitle

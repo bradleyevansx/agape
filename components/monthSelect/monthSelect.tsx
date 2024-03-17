@@ -14,7 +14,7 @@ import { months } from "@/types/months";
 import { useParams } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Tables } from "@/database.types";
-import { ArrowLeft, ArrowRight, Loader2Icon } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 interface Props {
   baseRoute: string;
@@ -43,7 +43,6 @@ const MonthSelect = ({ baseRoute, onIdChange }: Props) => {
   }, [budgetGroupId, supabase]);
 
   useEffect(() => {
-    console.log("AGAIN");
     const fetchNewData = async () => {
       if (monthYear) {
         const { data, error } = await supabase
@@ -63,7 +62,7 @@ const MonthSelect = ({ baseRoute, onIdChange }: Props) => {
       }
     };
     fetchNewData();
-  }, [baseRoute, onIdChange, supabase]);
+  }, [baseRoute, onIdChange, supabase, monthYear?.month, monthYear?.year]);
 
   const handleMonthChange = (newMonthYear: string) => {
     const [newMonth, newYear] = newMonthYear.split(" ");

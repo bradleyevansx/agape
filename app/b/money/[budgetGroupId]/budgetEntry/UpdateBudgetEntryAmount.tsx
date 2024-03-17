@@ -4,6 +4,7 @@ import { Tables } from "@/database.types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { toast } from "sonner";
 import { Check, Loader2Icon } from "lucide-react";
+import ConfirmUpdate from "@/components/crud/ConfirmUpdate";
 
 interface Props {
   budgetEntry: Tables<"budgetEntry">;
@@ -47,25 +48,14 @@ const UpdateBudgetEntryAmount = ({ budgetEntry, type }: Props) => {
 
       e.preventDefault();
     } else if (e.key === "Escape") {
+      cancelSave();
       e.preventDefault();
-      setIsEditing(false);
     }
   };
 
-  const saveButton = useMemo(() => {
-    return (
-      <>
-        {isLoading ? (
-          <Loader2Icon
-            className="animate-spin text-green-400"
-            size={15}
-          ></Loader2Icon>
-        ) : (
-          <Check size={15} className="text-green-400"></Check>
-        )}
-      </>
-    );
-  }, [isLoading]);
+  const cancelSave = () => {
+    setIsEditing(false);
+  };
 
   useEffect(() => {
     if (isEditing) {
@@ -84,6 +74,7 @@ const UpdateBudgetEntryAmount = ({ budgetEntry, type }: Props) => {
       return isEditing ? (
         <span className="relative">
           <Input
+            disabled={isLoading}
             id="inputField"
             className={inputClassName}
             type="number"
@@ -91,12 +82,11 @@ const UpdateBudgetEntryAmount = ({ budgetEntry, type }: Props) => {
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
           />
-          <span
-            onClick={saveData}
-            className="bg-green-100 hover:cursor-pointer text-green absolute top-0.5 p-0.5 rounded-xl right-0"
-          >
-            {saveButton}
-          </span>
+          <ConfirmUpdate
+            saveData={saveData}
+            cancelSave={cancelSave}
+            isLoading={isLoading}
+          ></ConfirmUpdate>
         </span>
       ) : (
         <p
@@ -113,6 +103,7 @@ const UpdateBudgetEntryAmount = ({ budgetEntry, type }: Props) => {
       return isEditing ? (
         <span className="relative">
           <Input
+            disabled={isLoading}
             id="inputField"
             className={inputClassName}
             type="number"
@@ -120,12 +111,11 @@ const UpdateBudgetEntryAmount = ({ budgetEntry, type }: Props) => {
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}
           />
-          <span
-            onClick={saveData}
-            className="bg-green-100 hover:cursor-pointer text-green absolute top-0.5 p-0.5 rounded-xl right-0"
-          >
-            {saveButton}
-          </span>
+          <ConfirmUpdate
+            saveData={saveData}
+            cancelSave={cancelSave}
+            isLoading={isLoading}
+          ></ConfirmUpdate>
         </span>
       ) : (
         <p

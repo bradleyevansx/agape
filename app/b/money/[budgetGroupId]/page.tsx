@@ -10,7 +10,7 @@ import BudgetEntryGroupsDisplay from "./Display";
 const BudgetGroupEditor = async ({ params }: { params: Params }) => {
   const { budgetGroupId } = params;
   return (
-    <main className="flex flex-col space-y-4 py-4 justify-start items-center min-h-app">
+    <main className="flex flex-col space-y-4 p-4 justify-start items-center min-h-app">
       <BudgetEntryGroupsDisplay
         budgetGroupId={budgetGroupId}
       ></BudgetEntryGroupsDisplay>

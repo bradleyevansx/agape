@@ -11,6 +11,7 @@ import {
   useBudgetAutoSave,
 } from "@/customHooks/useBudget";
 import BudgetEntryGroups from "./BudgetEntryGroups";
+import Totals from "./Totals";
 interface Props {
   budgetGroupId: string;
 }
@@ -29,6 +30,7 @@ const BudgetEntryGroupsDisplay = ({ budgetGroupId }: Props) => {
         <TypeSelect type={type} onTypeChange={setType}></TypeSelect>
       </section>
       <BudgetAutoSaveProvider budgetGroupId={id}>
+        <Totals type={type}></Totals>
         <BudgetEntryGroups type={type}></BudgetEntryGroups>
       </BudgetAutoSaveProvider>
     </>

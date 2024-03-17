@@ -1,5 +1,6 @@
 "use client";
 
+import ConfirmUpdate from "@/components/crud/ConfirmUpdate";
 import { Input } from "@/components/ui/input";
 import { Tables } from "@/database.types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -38,12 +39,16 @@ const UpdateBudgetEntryTitle = ({ budgetEntry }: Props) => {
       saveData();
       e.preventDefault();
     } else if (e.key === "Escape") {
-      setValue(budgetEntry.title!);
-      setIsEditing(false);
+      cancelSave();
       e.preventDefault();
     }
   };
   const [value, setValue] = useState<string>(budgetEntry.title!);
+
+  const cancelSave = () => {
+    setValue(budgetEntry.title!);
+    setIsEditing(false);
+  };
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > 15) {
@@ -58,38 +63,24 @@ const UpdateBudgetEntryTitle = ({ budgetEntry }: Props) => {
       document.getElementById("title")?.focus();
     }
   }, [isEditing]);
-  const saveButton = useMemo(() => {
-    return (
-      <>
-        {isLoading ? (
-          <Loader2Icon
-            className="animate-spin text-green-400"
-            size={15}
-          ></Loader2Icon>
-        ) : (
-          <Check size={15} className="text-green-400"></Check>
-        )}
-      </>
-    );
-  }, [isLoading]);
 
   return (
     <>
       {isEditing ? (
         <span className="relative mr-auto">
           <Input
+            disabled={isLoading}
             id="title"
             onChange={handleOnChange}
             value={value}
             onKeyDown={handleKeyDown}
             className={className}
           ></Input>
-          <span
-            onClick={saveData}
-            className="bg-green-100 hover:cursor-pointer text-green absolute top-0.5 p-0.5 rounded-xl right-0"
-          >
-            {saveButton}
-          </span>
+          <ConfirmUpdate
+            saveData={saveData}
+            isLoading={isLoading}
+            cancelSave={cancelSave}
+          ></ConfirmUpdate>
         </span>
       ) : (
         <p

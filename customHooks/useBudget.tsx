@@ -29,6 +29,9 @@ export const BudgetAutoSaveProvider: React.FC<BudgetAutoSaveProviderProps> = ({
   children,
   budgetGroupId,
 }) => {
+  const [type, setType] = useState<"Planned" | "Actual" | "Remaining">(
+    "Planned"
+  );
   const [partnerId, setPartnerId] = useState<string[]>([]);
   const supabase = createClientComponentClient();
   const [budgetEntryGroups, setBudgetEntryGroups] = useState<

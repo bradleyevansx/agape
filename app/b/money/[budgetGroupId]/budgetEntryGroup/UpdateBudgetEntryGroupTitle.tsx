@@ -1,5 +1,7 @@
 "use client";
 
+import ConfirmUpdate from "@/components/crud/ConfirmUpdate";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tables } from "@/database.types";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -38,11 +40,16 @@ const UpdateBudgetEntryGroupTitle = ({ budgetEntryGroup }: Props) => {
       saveData();
       e.preventDefault();
     } else if (e.key === "Escape") {
-      setValue(budgetEntryGroup.title!);
-      setIsEditing(false);
+      cancelSave();
       e.preventDefault();
     }
   };
+
+  const cancelSave = () => {
+    setValue(budgetEntryGroup.title!);
+    setIsEditing(false);
+  };
+
   const [value, setValue] = useState<string>(budgetEntryGroup.title!);
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,8 +71,9 @@ const UpdateBudgetEntryGroupTitle = ({ budgetEntryGroup }: Props) => {
   return (
     <>
       {isEditing ? (
-        <span className="relative">
+        <span>
           <Input
+            disabled={isLoading}
             id="title"
             onChange={handleOnChange}
             value={value}
@@ -73,19 +81,11 @@ const UpdateBudgetEntryGroupTitle = ({ budgetEntryGroup }: Props) => {
             className={className}
           ></Input>
 
-          <span
-            onClick={saveData}
-            className="bg-green-100 hover:cursor-pointer text-green absolute top-0.5 p-0.5 rounded-xl right-0"
-          >
-            {isLoading ? (
-              <Loader2Icon
-                className="animate-spin text-green-400"
-                size={15}
-              ></Loader2Icon>
-            ) : (
-              <Check size={15} className="text-green-400"></Check>
-            )}
-          </span>
+          <ConfirmUpdate
+            saveData={saveData}
+            isLoading={isLoading}
+            cancelSave={cancelSave}
+          ></ConfirmUpdate>
         </span>
       ) : (
         <p
