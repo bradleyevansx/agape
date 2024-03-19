@@ -59,23 +59,41 @@ const Totals = ({ type }: Props) => {
     }, 0);
   }, [budgetEntries, budgetEntryGroups, type, getEntryValue]);
 
+  const total = useMemo(() => {
+    switch (type) {
+      case "Planned":
+        return totalIncome;
+      case "Actual":
+        return totalExpenses;
+      case "Remaining":
+        return totalExpenses;
+    }
+  }, [budgetEntries, budgetEntryGroups, type]);
+
+  const totalMessage = useMemo(() => {
+    let message;
+    switch (type) {
+      case "Planned":
+        message = "Planned Income";
+        return message;
+      case "Actual":
+        message = "Total Spent So Far";
+        return message;
+      case "Remaining":
+        message = "Remaining Left To Be Spent";
+        return message;
+    }
+  }, [type]);
+
   return (
     <>
       {!isLoading && (
-        <Card className="w-full">
+        <Card>
           <CardContent className="pt-6 flex-row flex justify-between">
             <span className="flex flex-col gap-2 items-center">
-              <p className="font-bold text-2xl ">{formatMoney(totalIncome)}</p>
-              <p className=" font-light text-sm bg-green-200 text-green-500 p-1 rounded">
-                Monthly Income
-              </p>
-            </span>
-            <span className="flex flex-col gap-2 items-center">
-              <p className="font-bold text-2xl ">
-                {formatMoney(totalExpenses)}
-              </p>
-              <p className="bg-red-200 text-red-500 p-1 rounded font-light text-sm">
-                Monthly Expenses
+              <p className="font-bold text-2xl ">{formatMoney(total)}</p>
+              <p className=" font-light text-sm bg-neutral-200 text-neutral-500 p-1 rounded">
+                {totalMessage}
               </p>
             </span>
           </CardContent>

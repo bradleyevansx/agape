@@ -5,6 +5,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { toast } from "sonner";
 import { Check, Loader2Icon } from "lucide-react";
 import ConfirmUpdate from "@/components/crud/ConfirmUpdate";
+import { formatMoney } from "@/lib/money";
 
 interface Props {
   budgetEntry: Tables<"budgetEntry">;
@@ -96,7 +97,7 @@ const UpdateBudgetEntryAmount = ({ budgetEntry, type }: Props) => {
           }}
           className={pClassName}
         >
-          {"$" + budgetEntry.planned.toFixed(2)}
+          {formatMoney(budgetEntry.planned)}
         </p>
       );
     case "Actual":
@@ -125,11 +126,11 @@ const UpdateBudgetEntryAmount = ({ budgetEntry, type }: Props) => {
           }}
           className={pClassName}
         >
-          {"$" + budgetEntry.actual.toFixed(2)}
+          {formatMoney(budgetEntry.actual)}
         </p>
       );
     case "Remaining":
-      return <p className={pClassName}>{remaining}</p>;
+      return <p className={pClassName}>{formatMoney(remaining)}</p>;
     default:
       return null;
   }

@@ -13,6 +13,7 @@ import {
 import BudgetEntryGroups from "./BudgetEntryGroups";
 import Totals from "./Totals";
 import Loading from "./Loading";
+import NeedsBudgeting from "./NeedsBudgeting";
 interface Props {
   budgetGroupId: string;
 }
@@ -33,6 +34,7 @@ const BudgetEntryGroupsDisplay = ({ budgetGroupId }: Props) => {
       <BudgetAutoSaveProvider budgetGroupId={id}>
         <Loading></Loading>
         <Totals type={type}></Totals>
+        <NeedsBudgeting></NeedsBudgeting>
         <BudgetEntryGroups type={type}></BudgetEntryGroups>
       </BudgetAutoSaveProvider>
     </>
