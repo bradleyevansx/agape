@@ -68,7 +68,7 @@ const UpdateBudgetEntryAmount = ({ budgetEntry, type }: Props) => {
     "border-t-0 ml-auto w-[82px] text-center border-x-0 rounded-none active:outline-none h-[24px]";
 
   const pClassName =
-    "text-sm font-semibold hover:cursor-pointer w-[82px] text-center";
+    "text-sm font-semibold hover:cursor-pointer w-[60px] text-center";
 
   switch (type) {
     case "Planned":

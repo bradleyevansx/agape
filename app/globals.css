@@ -91,7 +91,7 @@
 }
 
 .min-h-app {
-  min-height: calc(100vh - 57px);
+  min-height: calc(100vh);
 }
 .remove-arrow::-webkit-inner-spin-button,
 .remove-arrow::-webkit-outer-spin-button {

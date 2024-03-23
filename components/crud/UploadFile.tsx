@@ -41,7 +41,6 @@ const UploadFile = ({ fileType, label, initialValue }: Props) => {
         const { data } = await supabase.storage
           .from("avatar")
           .createSignedUrl(path, 60);
-        console.log(data);
         setImage(data?.signedUrl);
       }
     };

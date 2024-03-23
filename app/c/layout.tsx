@@ -20,7 +20,7 @@ export default async function layout({
   }
 
   return (
-    <main className="flex-1">
+    <main className="flex-1 min-h-app">
       <NavBar></NavBar>
       {children}
     </main>

@@ -1,7 +1,7 @@
 import { useBudgetAutoSave } from "@/customHooks/useBudget";
 import React from "react";
 import BudgetEntryGroup from "./budgetEntryGroup/BudgetEntryGroup";
-import AddBudgetEntryGroup from "./budgetEntryGroup/AddBudgetEntryGroup";
+import CreateBudgetEntryGroup from "./budgetEntryGroup/CreateBudgetEntryGroup";
 import { Loader2Icon } from "lucide-react";
 import Text from "@/components/typography/Text";
 import { Card, CardContent } from "@/components/ui/card";
@@ -35,7 +35,7 @@ const BudgetEntryGroups = ({ type }: Props) => {
           </CardContent>
         </Card>
       )}
-      {!isLoading && <AddBudgetEntryGroup></AddBudgetEntryGroup>}
+      {!isLoading && <CreateBudgetEntryGroup></CreateBudgetEntryGroup>}
     </>
   );
 };

@@ -15,7 +15,6 @@ const BudgetEntry = ({ budgetEntry, type }: Props) => {
   return (
     <li className="flex items-center">
       <DeleteBudgetEntry budgetEntryId={budgetEntry.id}></DeleteBudgetEntry>
-      <p className="mr-1">{budgetEntry.emoji}</p>
       <UpdateBudgetEntryTitle
         budgetEntry={budgetEntry}
       ></UpdateBudgetEntryTitle>

@@ -61,7 +61,7 @@ const UpdateEntity = ({
   }, [inputValue, updateDb]);
 
   return (
-    <div className="relative">
+    <div>
       <Label>{placeHolder}</Label>
       <div className="relative">
         {inputValue === undefined ? (

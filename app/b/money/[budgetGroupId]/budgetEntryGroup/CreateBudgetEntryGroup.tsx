@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -18,18 +18,50 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { months } from "@/types/months";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useBudgetAutoSave } from "@/customHooks/useBudget";
+import SelectCategory from "./SelectCategory";
+import { Tables } from "@/database.types";
 
-const AddBudgetEntryGroup = () => {
+const CreateBudgetEntryGroup = () => {
   const [open, setOpen] = useState(false);
   const supabase = createClientComponentClient();
   const { budgetGroupId, userIds } = useBudgetAutoSave();
-  const [type, setType] = useState<"debit" | "credit" | undefined>();
+  const [type, setType] = useState<"debit" | "credit" | undefined>(undefined);
   const [title, setTitle] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+  const [userId, setUserId] = useState("");
+
+  const [users, setUsers] = useState<Tables<"profile">[]>([]);
+
+  useEffect(() => {
+    if (!userIds) return;
+    const fetchAsync = async () => {
+      const user = await supabase.auth.getUser();
+      const { data } = await supabase
+        .from("profile")
+        .select("*")
+        .eq("id", user.data.user?.id)
+        .single<Tables<"profile">>();
+
+      const { data: partnerData } = await supabase
+        .from("profile")
+        .select("*")
+        .eq(
+          "id",
+          userIds.find((x) => x !== user.data.user?.id)
+        )
+        .single<Tables<"profile">>();
+
+      if (partnerData && data) {
+        setUsers(() => [data, partnerData]);
+      }
+    };
+
+    fetchAsync();
+  }, [userIds]);
 
   const [isLoading, setIsLoading] = useState(false);
   const handleAddBudgetEntryGroup = async () => {
@@ -41,6 +73,9 @@ const AddBudgetEntryGroup = () => {
       toast.error("Please select a type");
       return;
     }
+    if (userId === "") {
+      toast.error("Please assign this group to a person");
+    }
     setIsLoading(true);
 
     const { data, error } = await supabase.from("budgetEntryGroup").insert({
@@ -48,6 +83,8 @@ const AddBudgetEntryGroup = () => {
       type: type,
       budgetGroupId: budgetGroupId,
       userIds: [userIds],
+      budgetEntryCategoryId: categoryId.length > 0 ? categoryId : null,
+      userId: userId,
     });
     setOpen(false);
     setIsLoading(false);
@@ -110,18 +147,46 @@ const AddBudgetEntryGroup = () => {
               setType(value as "debit" | "credit" | undefined);
             }}
           >
-            <SelectTrigger className="w-24">
+            <SelectTrigger className="w-full">
               <SelectValue placeholder="Select a month" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectLabel>Debit or Credit</SelectLabel>
-                <SelectItem value={`debit`} key={1}>
-                  {`Debit`}
-                </SelectItem>
+                <SelectLabel>Income or Expense</SelectLabel>
                 <SelectItem value={`credit`} key={2}>
-                  {`Credit`}
+                  {`Income`}
                 </SelectItem>
+                <SelectItem value={`debit`} key={1}>
+                  {`Expense`}
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </span>
+        <SelectCategory
+          type={type}
+          selectedCategoryId={categoryId}
+          onChange={setCategoryId}
+        ></SelectCategory>
+        <span>
+          <Label>Person</Label>
+          <Select
+            value={userId}
+            onValueChange={(value) => {
+              setUserId(value);
+            }}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select person" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>Options</SelectLabel>
+                {users.map((x) => (
+                  <SelectItem key={x.id} value={x.id}>
+                    {x.firstName}
+                  </SelectItem>
+                ))}
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -138,4 +203,4 @@ const AddBudgetEntryGroup = () => {
   );
 };
 
-export default AddBudgetEntryGroup;
+export default CreateBudgetEntryGroup;

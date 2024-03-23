@@ -20,7 +20,6 @@ const AddBudgetEntry = ({ budgetEntryGroupId: budgetGroupId }: Props) => {
   const handleAddBudgetEntry = async () => {
     setIsLoading(true);
     const { data, error } = await supabase.from("budgetEntry").insert({
-      emoji: "😁",
       title: "New Entry",
       budgetEntryGroupId: budgetGroupId,
       userIds: [userIds],

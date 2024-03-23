@@ -10,7 +10,7 @@ interface Props {
 const DeleteBudgetEntry = ({ budgetEntryId }: Props) => {
   return (
     <DeleteEntityModal
-      trigger={<X className="hover:cursor-pointer" size={13}></X>}
+      trigger={<X className="hover:cursor-pointer mr-2" size={13}></X>}
       tableName="budgetEntry"
       entityId={budgetEntryId}
     ></DeleteEntityModal>

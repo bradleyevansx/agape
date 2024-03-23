@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import SignOut from "../authState/SignOut";
 import { ColorModeSwitch } from "../colorModeSwitch/ColorModeSwitch";
 import Link from "next/link";
@@ -14,21 +12,14 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 import { Sign } from "crypto";
 import ToLogin from "../authState/ToLogin";
-const NavBar = () => {
-  const supabase = createClientComponentClient();
-  const [loggedIn, setLoggedIn] = useState(false);
-  useEffect(() => {
-    (async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (!session) {
-        setLoggedIn(false);
-      } else {
-        setLoggedIn(true);
-      }
-    })();
-  });
+import UpdateAvatar from "@/components/crud/UpdateAvatar";
+import { cookies } from "next/headers";
+import { Tables } from "@/database.types";
+import ProfileAvatar from "../profile/ProfileAvatar";
+import Settings from "./Settings";
+const NavBar = async () => {
+  const supabase = createServerComponentClient({ cookies });
+  const { data } = await supabase.auth.getSession();
 
   return (
     <>
@@ -47,8 +38,7 @@ const NavBar = () => {
           </div>
           <div className="flex items-center justify-between space-x-2 md:justify-end ml-auto">
             <nav className="flex items-center gap-2">
-              {loggedIn ? <SignOut></SignOut> : <ToLogin></ToLogin>}
-              <ColorModeSwitch></ColorModeSwitch>
+              {data.session && <Settings></Settings>}
             </nav>
           </div>
         </div>

@@ -33,8 +33,6 @@ export default function LandingPage() {
           every moment count.
         </p>
       </section>
-
-      <ToLogin></ToLogin>
     </main>
   );
 }

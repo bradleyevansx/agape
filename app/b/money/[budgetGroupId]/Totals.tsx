@@ -89,7 +89,7 @@ const Totals = ({ type }: Props) => {
     <>
       {!isLoading && (
         <Card>
-          <CardContent className="pt-6 flex-row flex justify-between">
+          <CardContent className="p-4 flex-row flex justify-between">
             <span className="flex flex-col gap-2 items-center">
               <p className="font-bold text-2xl ">{formatMoney(total)}</p>
               <p className=" font-light text-sm bg-neutral-200 text-neutral-500 p-1 rounded">

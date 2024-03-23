@@ -26,15 +26,11 @@ const UpdateBudgetEntryGroupType = ({ budgetEntryGroup, type }: Props) => {
 
   return (
     <Badge
-      onClick={handleUpdate}
-      className="hover:cursor-pointer min-w-[58px] min-h-[22px]"
+      // onClick={handleUpdate}
+      className="min-w-[58px] min-h-[22px]"
       variant={budgetEntryGroup.type}
     >
-      {isLoading ? (
-        <Loader2Icon className="mx-auto animate-spin" size={15}></Loader2Icon>
-      ) : (
-        type
-      )}
+      {type}
     </Badge>
   );
 };

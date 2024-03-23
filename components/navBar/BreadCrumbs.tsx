@@ -1,3 +1,5 @@
+"use client";
+
 import { usePathname } from "next/navigation";
 import React from "react";
 import {
@@ -13,22 +15,29 @@ const BreadCrumbs = () => {
   const pathNames = paths.split("/").filter((path) => path);
   const renderHomeBreadcrumb = pathNames.length > 1;
   const filteredPathNames = pathNames.filter(
-    (path) => path !== "a" && path !== "b" && path.length <= 15
+    (path) => path !== "a" && path !== "b" && path !== "c" && path.length <= 15
   );
 
   if (!renderHomeBreadcrumb) return null;
 
   return (
     <span
-      style={{ position: "fixed", bottom: "0", left: "0", padding: "10px" }}
+      style={{
+        position: "fixed",
+        bottom: "0",
+        left: "0",
+        padding: "10px",
+        zIndex: 9999, // Ensure it's above other content
+      }}
     >
       <Breadcrumb>
         <BreadcrumbList>
-          {pathNames.includes("b") && (
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/b">Home</BreadcrumbLink>
-            </BreadcrumbItem>
-          )}
+          {pathNames.includes("b") ||
+            (pathNames.includes("c") && (
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/b">Home</BreadcrumbLink>
+              </BreadcrumbItem>
+            ))}
           {filteredPathNames.map((path, index) => (
             <React.Fragment key={index}>
               <BreadcrumbSeparator />

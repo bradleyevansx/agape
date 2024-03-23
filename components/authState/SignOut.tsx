@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { DropdownMenuItem } from "../ui/dropdown-menu";
 
 const SignOut = () => {
   const supabase = createClientComponentClient();
@@ -18,9 +19,9 @@ const SignOut = () => {
   };
 
   return (
-    <Button isLoading={isLoading} onClick={handleSignOut}>
+    <DropdownMenuItem disabled={isLoading} onClick={handleSignOut}>
       Sign Out
-    </Button>
+    </DropdownMenuItem>
   );
 };
 

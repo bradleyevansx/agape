@@ -22,6 +22,7 @@ import { useBudgetAutoSave } from "@/customHooks/useBudget";
 import DeleteBudgetEntryGroup from "./DeleteBudgetEntryGroup";
 import { Badge } from "@/components/ui/badge";
 import UpdateBudgetEntryGroupType from "./UpdateBudgetEntryGroupType";
+import BudgetEntryCategoryIcon from "./BudgetEntryCategoryIcon";
 interface Props {
   budgetEntryGroup: Tables<"budgetEntryGroup">;
   type: "Planned" | "Actual" | "Remaining";
@@ -46,9 +47,14 @@ const BudgetEntryGroup = ({ type, budgetEntryGroup }: Props) => {
     <Card className="w-full max-w-[415px]">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
-          <UpdateBudgetEntryGroupTitle
-            budgetEntryGroup={budgetEntryGroup}
-          ></UpdateBudgetEntryGroupTitle>
+          <span className="flex gap-2">
+            <BudgetEntryCategoryIcon
+              budgetEntryGroup={budgetEntryGroup}
+            ></BudgetEntryCategoryIcon>
+            <UpdateBudgetEntryGroupTitle
+              budgetEntryGroup={budgetEntryGroup}
+            ></UpdateBudgetEntryGroupTitle>
+          </span>
           <UpdateBudgetEntryGroupType
             budgetEntryGroup={budgetEntryGroup}
             type={type}

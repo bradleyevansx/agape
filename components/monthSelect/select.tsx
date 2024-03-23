@@ -37,7 +37,6 @@ const ValueSetter = ({ onChange }: Props) => {
           .single<Tables<"budgetGroup">>();
 
         if (!data) return;
-        console.log(data);
         setMonthYear({
           month: data.month,
           year: data.year,

@@ -5,7 +5,7 @@ import { formatMoney } from "@/lib/money";
 import React, { useMemo } from "react";
 
 const NeedsBudgeting = () => {
-  const { budgetEntries, budgetEntryGroups } = useBudgetAutoSave();
+  const { budgetEntries, budgetEntryGroups, isLoading } = useBudgetAutoSave();
 
   const getTotal = (desiredEntryType: "debit" | "credit") => {
     return budgetEntries.reduce((total, a) => {
@@ -20,13 +20,15 @@ const NeedsBudgeting = () => {
   };
 
   const totalPlannedIncome = useMemo(() => {
-    console.log(getTotal("credit"));
     return getTotal("credit");
   }, [budgetEntries, budgetEntryGroups]);
   const totalPlannedExpenses = useMemo(() => {
-    console.log(getTotal("debit"));
     return getTotal("debit");
   }, [budgetEntries, budgetEntryGroups]);
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <Card className="sticky top-[65px]">

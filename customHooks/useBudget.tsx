@@ -8,6 +8,7 @@ interface BudgetAutoSaveProps {
   budgetGroupId: string;
   isLoading: boolean;
   userIds: string[];
+  budgetEntryCategories: Tables<"budgetEntryCategory">[];
 }
 
 const BudgetAutoSaveContext = createContext<BudgetAutoSaveProps>({
@@ -16,6 +17,7 @@ const BudgetAutoSaveContext = createContext<BudgetAutoSaveProps>({
   budgetGroupId: "",
   isLoading: false,
   userIds: [],
+  budgetEntryCategories: [],
 });
 
 export const useBudgetAutoSave = () => useContext(BudgetAutoSaveContext);
@@ -29,9 +31,6 @@ export const BudgetAutoSaveProvider: React.FC<BudgetAutoSaveProviderProps> = ({
   children,
   budgetGroupId,
 }) => {
-  const [type, setType] = useState<"Planned" | "Actual" | "Remaining">(
-    "Planned"
-  );
   const [partnerId, setPartnerId] = useState<string[]>([]);
   const supabase = createClientComponentClient();
   const [budgetEntryGroups, setBudgetEntryGroups] = useState<
@@ -40,6 +39,9 @@ export const BudgetAutoSaveProvider: React.FC<BudgetAutoSaveProviderProps> = ({
   const [budgetEntries, setBudgetEntries] = useState<Tables<"budgetEntry">[]>(
     []
   );
+  const [budgetEntryCategories, setBudgetEntryCategories] = useState<
+    Tables<"budgetEntryCategory">[]
+  >([]);
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -73,6 +75,17 @@ export const BudgetAutoSaveProvider: React.FC<BudgetAutoSaveProviderProps> = ({
       if (!entriesError) {
         setBudgetEntries(entriesData ?? []);
       }
+
+      const { data: categoriesData, error: categoriesError } = await supabase
+        .from("budgetEntryCategory")
+        .select("*");
+
+      if (!categoriesError) {
+        setBudgetEntryCategories(
+          categoriesData as Tables<"budgetEntryCategory">[]
+        );
+      }
+
       setIsLoading(false);
     };
 
@@ -138,6 +151,7 @@ export const BudgetAutoSaveProvider: React.FC<BudgetAutoSaveProviderProps> = ({
   return (
     <BudgetAutoSaveContext.Provider
       value={{
+        budgetEntryCategories,
         budgetEntryGroups,
         budgetEntries,
         budgetGroupId,
