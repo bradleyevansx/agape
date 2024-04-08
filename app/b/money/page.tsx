@@ -5,9 +5,8 @@ import { cookies } from "next/headers";
 import { Database } from "@/database.types";
 import { redirect } from "next/navigation";
 import { months } from "@/types/months";
-const getMonthString = (month: number): string => {
-  return months[month - 1];
-};
+import { getMonthString } from "@/lib/month";
+
 const Dashboard = async () => {
   const supabase = createServerComponentClient({ cookies });
   const currentDate = new Date();

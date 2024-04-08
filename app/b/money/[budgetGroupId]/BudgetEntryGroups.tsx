@@ -5,6 +5,7 @@ import CreateBudgetEntryGroup from "./budgetEntryGroup/CreateBudgetEntryGroup";
 import { Loader2Icon } from "lucide-react";
 import Text from "@/components/typography/Text";
 import { Card, CardContent } from "@/components/ui/card";
+import CopyPlanned from "./CopyPlanned";
 
 interface Props {
   type: "Planned" | "Actual" | "Remaining";
@@ -30,7 +31,8 @@ const BudgetEntryGroups = ({ type }: Props) => {
           <CardContent className="mt-4">
             <Text variant="large">No Groups</Text>
             <Text variant="small">
-              Create your first set of budget entries.
+              Create your first set of budget entries or{" "}
+              <CopyPlanned></CopyPlanned> all planned entries from last month.
             </Text>
           </CardContent>
         </Card>
