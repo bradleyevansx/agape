@@ -28,7 +28,7 @@ import { Tables } from "@/database.types";
 const CreateBudgetEntryGroup = () => {
   const [open, setOpen] = useState(false);
   const supabase = createClientComponentClient();
-  const { budgetGroupId, userIds } = useBudgetAutoSave();
+  const { pointInTime, userIds } = useBudgetAutoSave();
   const [type, setType] = useState<"debit" | "credit" | undefined>(undefined);
   const [title, setTitle] = useState("");
   const [categoryId, setCategoryId] = useState("");
@@ -81,7 +81,7 @@ const CreateBudgetEntryGroup = () => {
     const { data, error } = await supabase.from("budgetEntryGroup").insert({
       title: title,
       type: type,
-      budgetGroupId: budgetGroupId,
+      pointInTime: pointInTime,
       userIds: [userIds],
       budgetEntryCategoryId: categoryId.length > 0 ? categoryId : null,
       userId: userId,
@@ -92,6 +92,8 @@ const CreateBudgetEntryGroup = () => {
   const initValues = () => {
     setType(undefined);
     setTitle("");
+    setCategoryId("");
+    setUserId("");
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

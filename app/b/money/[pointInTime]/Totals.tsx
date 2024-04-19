@@ -80,7 +80,7 @@ const Totals = ({ type }: Props) => {
         message = "Total Spent So Far";
         return message;
       case "Remaining":
-        message = "Remaining Left To Be Spent";
+        message = "Remaining To Be Spent";
         return message;
     }
   }, [type]);

@@ -18,24 +18,11 @@ const CopyPlanned = () => {
     const currentMonth = getMonthString(currentDate.getMonth() + 1);
 
     const currentYear = currentDate.getFullYear().toString();
-    const { data: lastMonthData, error: lastMonthError } = await supabase
-      .from("budgetGroup")
-      .select()
-      .eq("month", lastMonth)
-      .eq("year", currentYear);
-
-    const { data: currentMonthData, error: currentMonthError } = await supabase
-      .from("budgetGroup")
-      .select()
-      .eq("month", currentMonth)
-      .eq("year", currentYear);
-
-    if (!lastMonthData || !currentMonthData) return;
 
     const { data: lastMonthGroups, error: plannedEntriesError } = await supabase
       .from("budgetEntryGroup")
       .select()
-      .eq("budgetGroupId", lastMonthData[0].id);
+      .eq("pointInTime", `${lastMonth}-${currentYear}`);
 
     if (!lastMonthGroups) return;
 
@@ -44,7 +31,7 @@ const CopyPlanned = () => {
         .from("budgetEntryGroup")
         .insert([
           {
-            budgetGroupId: currentMonthData[0].id,
+            pointInTime: `${currentMonth}-${currentYear}`,
             title: entryGroup.title,
             userIds: entryGroup.userIds,
             type: entryGroup.type,

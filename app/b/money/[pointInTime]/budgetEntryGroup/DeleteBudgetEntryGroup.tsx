@@ -5,10 +5,10 @@ import { Trash2 } from "lucide-react";
 import React from "react";
 
 interface Props {
-  budgetGroupId: string;
+  budgetEntryGroupId: string;
 }
 
-const DeleteBudgetEntryGroup = ({ budgetGroupId }: Props) => {
+const DeleteBudgetEntryGroup = ({ budgetEntryGroupId }: Props) => {
   return (
     <DeleteEntityModal
       trigger={
@@ -17,7 +17,7 @@ const DeleteBudgetEntryGroup = ({ budgetGroupId }: Props) => {
         </Button>
       }
       tableName="budgetEntryGroup"
-      entityId={budgetGroupId}
+      entityId={budgetEntryGroupId}
     ></DeleteEntityModal>
   );
 };

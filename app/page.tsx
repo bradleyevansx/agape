@@ -7,8 +7,8 @@ import Image from "next/image";
 export default function LandingPage() {
   return (
     <main className="flex-1">
-      <NavBar></NavBar>
-      <section className="mx-auto flex max-w-[980px] flex-col items-center gap-2 py-8 md:py-12 md:pb-8 lg:py-24 lg:pb-20">
+      <NavBar isLandingPage={true}></NavBar>
+      <section className="mx-auto flex max-w-[980px] flex-col items-center gap-2 py-8 md:py-12 md:pb-8 lg:py-24 lg:pb-20 min-h-app">
         <a
           target="_blank"
           href="https://www.merriam-webster.com/dictionary/agape"

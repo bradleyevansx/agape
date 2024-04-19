@@ -16,7 +16,7 @@ const Links = () => {
       >
         Food
       </Link>
-      <Link
+      {/* <Link
         href="#"
         className="transition-colors hover:text-foreground/80 text-foreground/60"
       >
@@ -27,7 +27,10 @@ const Links = () => {
         className="transition-colors hover:text-foreground/80 text-foreground/60"
       >
         Goals
-      </Link>
+      </Link> */}
+      <p className="transition-colors hover:text-foreground/80 text-foreground/60">
+        More coming soon.
+      </p>
     </>
   );
 };

@@ -71,9 +71,9 @@ export type Database = {
       budgetEntryGroup: {
         Row: {
           budgetEntryCategoryId: string | null
-          budgetGroupId: string
           createdAt: string
           id: string
+          pointInTime: string
           title: string
           type: Database["public"]["Enums"]["entryType"]
           userId: string
@@ -81,9 +81,9 @@ export type Database = {
         }
         Insert: {
           budgetEntryCategoryId?: string | null
-          budgetGroupId: string
           createdAt?: string
           id?: string
+          pointInTime: string
           title?: string
           type?: Database["public"]["Enums"]["entryType"]
           userId?: string
@@ -91,9 +91,9 @@ export type Database = {
         }
         Update: {
           budgetEntryCategoryId?: string | null
-          budgetGroupId?: string
           createdAt?: string
           id?: string
+          pointInTime?: string
           title?: string
           type?: Database["public"]["Enums"]["entryType"]
           userId?: string
@@ -108,13 +108,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "public_budgetEntryGroup_budgetGroupId_fkey"
-            columns: ["budgetGroupId"]
-            isOneToOne: false
-            referencedRelation: "budgetGroup"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "public_budgetEntryGroup_userId_fkey"
             columns: ["userId"]
             isOneToOne: false
@@ -122,27 +115,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      budgetGroup: {
-        Row: {
-          createdAt: string
-          id: string
-          month: string
-          year: string
-        }
-        Insert: {
-          createdAt?: string
-          id?: string
-          month?: string
-          year?: string
-        }
-        Update: {
-          createdAt?: string
-          id?: string
-          month?: string
-          year?: string
-        }
-        Relationships: []
       }
       profile: {
         Row: {

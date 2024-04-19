@@ -12,7 +12,7 @@ interface Props {
   budgetEntryGroupId: string;
 }
 
-const AddBudgetEntry = ({ budgetEntryGroupId: budgetGroupId }: Props) => {
+const AddBudgetEntry = ({ budgetEntryGroupId }: Props) => {
   const supabase = createClientComponentClient();
   const [isLoading, setIsLoading] = useState(false);
   const { userIds } = useBudgetAutoSave();
@@ -21,7 +21,7 @@ const AddBudgetEntry = ({ budgetEntryGroupId: budgetGroupId }: Props) => {
     setIsLoading(true);
     const { data, error } = await supabase.from("budgetEntry").insert({
       title: "New Entry",
-      budgetEntryGroupId: budgetGroupId,
+      budgetEntryGroupId: budgetEntryGroupId,
       userIds: [userIds],
     });
     setIsLoading(false);

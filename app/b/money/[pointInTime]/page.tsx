@@ -7,15 +7,15 @@ import { Database, Tables } from "@/database.types";
 import BudgetEntryGroup from "./budgetEntryGroup/BudgetEntryGroup";
 import TypeSelect from "./TypeSelect";
 import BudgetEntryGroupsDisplay from "./BudgetEntryGroupsDisplay";
-const BudgetGroupEditor = async ({ params }: { params: Params }) => {
-  const { budgetGroupId } = params;
+const BudgetEntryGroupEditor = async ({ params }: { params: Params }) => {
+  const { pointInTime } = params;
   return (
     <div className="flex flex-col gap-4 p-4 justify-start items-center ">
       <BudgetEntryGroupsDisplay
-        budgetGroupId={budgetGroupId}
+        pointInTime={pointInTime}
       ></BudgetEntryGroupsDisplay>
     </div>
   );
 };
 
-export default BudgetGroupEditor;
+export default BudgetEntryGroupEditor;

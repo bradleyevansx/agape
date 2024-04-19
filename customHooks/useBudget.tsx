@@ -5,7 +5,7 @@ import { Tables } from "@/database.types";
 interface BudgetAutoSaveProps {
   budgetEntryGroups: Tables<"budgetEntryGroup">[];
   budgetEntries: Tables<"budgetEntry">[];
-  budgetGroupId: string;
+  pointInTime: string;
   isLoading: boolean;
   userIds: string[];
   budgetEntryCategories: Tables<"budgetEntryCategory">[];
@@ -14,7 +14,7 @@ interface BudgetAutoSaveProps {
 const BudgetAutoSaveContext = createContext<BudgetAutoSaveProps>({
   budgetEntryGroups: [],
   budgetEntries: [],
-  budgetGroupId: "",
+  pointInTime: "",
   isLoading: false,
   userIds: [],
   budgetEntryCategories: [],
@@ -24,12 +24,12 @@ export const useBudgetAutoSave = () => useContext(BudgetAutoSaveContext);
 
 interface BudgetAutoSaveProviderProps {
   children: React.ReactNode;
-  budgetGroupId: string;
+  pointInTime: string;
 }
 
 export const BudgetAutoSaveProvider: React.FC<BudgetAutoSaveProviderProps> = ({
   children,
-  budgetGroupId,
+  pointInTime,
 }) => {
   const [partnerId, setPartnerId] = useState<string[]>([]);
   const supabase = createClientComponentClient();
@@ -51,7 +51,7 @@ export const BudgetAutoSaveProvider: React.FC<BudgetAutoSaveProviderProps> = ({
       const { data: entryGroupsData, error: entryGroupsError } = await supabase
         .from("budgetEntryGroup")
         .select("*")
-        .eq("budgetGroupId", budgetGroupId);
+        .eq("pointInTime", pointInTime);
       if (!entryGroupsError) {
         setBudgetEntryGroups(entryGroupsData ?? []);
       }
@@ -106,7 +106,7 @@ export const BudgetAutoSaveProvider: React.FC<BudgetAutoSaveProviderProps> = ({
     return () => {
       changes.unsubscribe();
     };
-  }, [supabase, budgetGroupId]);
+  }, [supabase, pointInTime]);
 
   const handleBudgetEntryGroupChange = (payload: any) => {
     const { eventType, new: newEntry, old } = payload;
@@ -154,7 +154,7 @@ export const BudgetAutoSaveProvider: React.FC<BudgetAutoSaveProviderProps> = ({
         budgetEntryCategories,
         budgetEntryGroups,
         budgetEntries,
-        budgetGroupId,
+        pointInTime,
         isLoading,
         userIds: partnerId,
       }}

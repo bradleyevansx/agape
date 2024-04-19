@@ -15,14 +15,14 @@ import Totals from "./Totals";
 import Loading from "./Loading";
 import NeedsBudgeting from "./NeedsBudgeting";
 interface Props {
-  budgetGroupId: string;
+  pointInTime: string;
 }
-const BudgetEntryGroupsDisplay = ({ budgetGroupId }: Props) => {
+const BudgetEntryGroupsDisplay = ({ pointInTime }: Props) => {
   const [type, setType] = useState<"Planned" | "Actual" | "Remaining">(
     "Planned"
   );
 
-  const [id, setId] = useState(budgetGroupId);
+  const [id, setId] = useState(pointInTime);
 
   return (
     <>
@@ -31,7 +31,7 @@ const BudgetEntryGroupsDisplay = ({ budgetGroupId }: Props) => {
         <div className="border-l"></div>
         <TypeSelect type={type} onTypeChange={setType}></TypeSelect>
       </section>
-      <BudgetAutoSaveProvider budgetGroupId={id}>
+      <BudgetAutoSaveProvider pointInTime={id}>
         <Loading></Loading>
         <Totals type={type}></Totals>
         <NeedsBudgeting></NeedsBudgeting>

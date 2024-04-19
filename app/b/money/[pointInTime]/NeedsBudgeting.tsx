@@ -34,7 +34,7 @@ const NeedsBudgeting = () => {
     <Card className="sticky top-[65px]">
       <CardContent className="p-2">
         <Text variant="muted">
-          Remaining left to budget:{" "}
+          Needs budgeting:{" "}
           <b>{formatMoney(totalPlannedIncome - totalPlannedExpenses)}</b>
         </Text>
       </CardContent>

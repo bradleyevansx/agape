@@ -21,8 +21,9 @@ import UpdateBudgetEntryGroupTitle from "./UpdateBudgetEntryGroupTitle";
 import { useBudgetAutoSave } from "@/customHooks/useBudget";
 import DeleteBudgetEntryGroup from "./DeleteBudgetEntryGroup";
 import { Badge } from "@/components/ui/badge";
-import UpdateBudgetEntryGroupType from "./UpdateBudgetEntryGroupType";
+import BudgetEntryGroupType from "./BudgetEntryGroupType";
 import BudgetEntryCategoryIcon from "./BudgetEntryCategoryIcon";
+import BudgetEntryGroupTotal from "./BudgetEntryGroupTotal";
 interface Props {
   budgetEntryGroup: Tables<"budgetEntryGroup">;
   type: "Planned" | "Actual" | "Remaining";
@@ -44,7 +45,11 @@ const BudgetEntryGroup = ({ type, budgetEntryGroup }: Props) => {
   const isDebit = budgetEntryGroup.type === "debit" ? "+" : "-";
 
   return (
-    <Card className="w-full max-w-[415px]">
+    <Card className="w-full max-w-[415px] relative">
+      <BudgetEntryGroupType
+        budgetEntryGroup={budgetEntryGroup}
+        type={type}
+      ></BudgetEntryGroupType>
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span className="flex gap-2">
@@ -55,10 +60,10 @@ const BudgetEntryGroup = ({ type, budgetEntryGroup }: Props) => {
               budgetEntryGroup={budgetEntryGroup}
             ></UpdateBudgetEntryGroupTitle>
           </span>
-          <UpdateBudgetEntryGroupType
-            budgetEntryGroup={budgetEntryGroup}
+          <BudgetEntryGroupTotal
+            entries={availableEntries}
             type={type}
-          ></UpdateBudgetEntryGroupType>
+          ></BudgetEntryGroupTotal>
         </CardTitle>
       </CardHeader>
       {open ? (
@@ -77,7 +82,7 @@ const BudgetEntryGroup = ({ type, budgetEntryGroup }: Props) => {
           </CardContent>
           <CardFooter className="gap-2">
             <DeleteBudgetEntryGroup
-              budgetGroupId={budgetEntryGroup.id}
+              budgetEntryGroupId={budgetEntryGroup.id}
             ></DeleteBudgetEntryGroup>
             <AddBudgetEntry
               budgetEntryGroupId={budgetEntryGroup.id}

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -15,6 +15,7 @@ import { useParams } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { Tables } from "@/database.types";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { init } from "next/dist/compiled/webpack/webpack";
 
 interface Props {
   baseRoute: string;
@@ -22,67 +23,36 @@ interface Props {
 }
 
 const MonthSelect = ({ baseRoute, onIdChange }: Props) => {
-  const { budgetGroupId } = useParams();
-  const supabase = createClientComponentClient();
+  const { pointInTime } = useParams();
+
+  const initialPIT = useMemo(() => {
+    const PIT = pointInTime as string;
+    const split = PIT.split("-");
+    return { month: split[0], year: split[1] };
+  }, []);
+
   const [monthYear, setMonthYear] = useState<{
     month: string;
     year: string;
-  } | null>(null);
-
-  useEffect(() => {
-    const fetchGroup = async () => {
-      const { data, error } = await supabase
-        .from("budgetGroup")
-        .select()
-        .eq("id", budgetGroupId)
-        .single<Tables<"budgetGroup">>();
-      if (!data) return;
-      setMonthYear({ month: data.month, year: data.year });
-    };
-    fetchGroup();
-  }, [budgetGroupId, supabase]);
-
-  useEffect(() => {
-    const fetchNewData = async () => {
-      if (monthYear) {
-        const { data, error } = await supabase
-          .from("budgetGroup")
-          .select()
-          .eq("month", monthYear?.month)
-          .eq("year", monthYear?.year)
-          .single<Tables<"budgetGroup">>();
-
-        if (!data) return;
-        setMonthYear({
-          month: data.month,
-          year: data.year,
-        });
-        onIdChange(data.id);
-        window.history.pushState(null, "", `${baseRoute}/${data.id}`);
-      }
-    };
-    fetchNewData();
-  }, [baseRoute, onIdChange, supabase, monthYear?.month, monthYear?.year]);
+  } | null>(initialPIT);
 
   const handleMonthChange = (newMonthYear: string) => {
-    const [newMonth, newYear] = newMonthYear.split(" ");
+    const [newMonth, newYear] = newMonthYear.split("-");
+    window.history.pushState(null, "", `${baseRoute}/${newMonth}-${newYear}`);
     setMonthYear({ month: newMonth, year: newYear });
   };
 
   const handleIncreaseMonth = () => {
     let index = months.indexOf(monthYear?.month!);
     if (index < 11) {
-      setMonthYear((prev) => {
-        return { ...prev!, month: months[index + 1] };
-      });
+      console.log(`${months[index + 1]}-${monthYear?.year}`);
+      handleMonthChange(`${months[index + 1]}-${monthYear?.year}`);
     }
   };
   const handleDecreaseMonth = () => {
     let index = months.indexOf(monthYear?.month!);
     if (index > 0) {
-      setMonthYear((prev) => {
-        return { ...prev!, month: months[index - 1] };
-      });
+      handleMonthChange(`${months[index - 1]}-${monthYear?.year}`);
     }
   };
 

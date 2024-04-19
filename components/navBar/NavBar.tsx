@@ -17,7 +17,11 @@ import { cookies } from "next/headers";
 import { Tables } from "@/database.types";
 import ProfileAvatar from "../profile/ProfileAvatar";
 import Settings from "./Settings";
-const NavBar = async () => {
+
+interface Props {
+  isLandingPage?: boolean;
+}
+const NavBar = async ({ isLandingPage = false }: Props) => {
   const supabase = createServerComponentClient({ cookies });
   const { data } = await supabase.auth.getSession();
 
@@ -25,22 +29,39 @@ const NavBar = async () => {
     <>
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 max-w-screen-2xl items-center">
-          <div className="mr-4 flex md:hidden">
-            <MobileNavSheet></MobileNavSheet>
-          </div>
-          <div className="mr-4 hidden md:flex">
-            <a href="#" className="mr-6 flex items-center space-x-2 text-lg">
-              Agape
-            </a>
-            <nav className="flex items-center gap-6 text-sm">
-              <Links></Links>
-            </nav>
-          </div>
-          <div className="flex items-center justify-between space-x-2 md:justify-end ml-auto">
-            <nav className="flex items-center gap-2">
-              {data.session && <Settings></Settings>}
-            </nav>
-          </div>
+          {!isLandingPage ? (
+            <div className="mr-4 flex md:hidden">
+              <MobileNavSheet></MobileNavSheet>
+            </div>
+          ) : (
+            <>
+              <a
+                href="#"
+                className="mr-auto flex items-center space-x-2 text-lg"
+              >
+                Agape
+              </a>
+              <ToLogin></ToLogin>
+            </>
+          )}
+          {!isLandingPage && (
+            <div className="mr-4 hidden md:flex">
+              <a href="#" className="mr-6 flex items-center space-x-2 text-lg">
+                Agape
+              </a>
+
+              <nav className="flex items-center gap-6 text-sm">
+                <Links></Links>
+              </nav>
+            </div>
+          )}
+          {!isLandingPage && (
+            <div className="flex items-center justify-between space-x-2 md:justify-end ml-auto">
+              <nav className="flex items-center gap-2">
+                {data.session && <Settings></Settings>}
+              </nav>
+            </div>
+          )}
         </div>
       </header>
       <BreadCrumbs></BreadCrumbs>
