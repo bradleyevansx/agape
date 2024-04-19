@@ -10,12 +10,12 @@ const Links = () => {
       >
         Money
       </Link>
-      <Link
+      {/* <Link
         href="#"
         className="transition-colors hover:text-foreground/80 text-foreground/60"
       >
         Food
-      </Link>
+      </Link> */}
       {/* <Link
         href="#"
         className="transition-colors hover:text-foreground/80 text-foreground/60"
